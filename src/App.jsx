@@ -9,7 +9,7 @@ const Card = React.memo(function Card({ politico, onOpenModal, isBroken, onBreak
     onBreak()
     setTimeout(() => {
       onOpenModal(); // <-- chiamiamo la funzione che imposta la modale
-    }, 150); // aspettiamo un po' per simulare "vetro rotto"
+    }, 350); // aspettiamo un po' per simulare "vetro rotto"
   }
 
   return (<div className={`card ${isBroken ? "broken" : ""}`} onClick={handleClick} onOpenModal={onOpenModal}>
@@ -77,6 +77,42 @@ function App() {
 
   console.log(filtrati)
 
+  let selettori = []
+  politici.forEach((cur) =>{
+    if(!selettori.includes(cur.position)){
+      selettori.push(cur.position)
+    }
+  })
+
+  console.log(selettori)
+
+  const [selectOption, setSelectOption] = useState("")
+
+const handleChange = (event) => {
+  setSelectOption(event.target.value)
+}
+
+const handleSelector = (arr) =>{
+  const filtrati = arr.filter((cur) => cur.position === selectOption)
+}
+
+// DATA TO RENDER
+const DataToRender = () => {
+  let data  = politici
+  if(filtrati.length > 0){
+    data = filtrati
+  }
+  if(selectOption.length > 0){
+  data = data.filter((cur) => cur.position === selectOption)
+  }
+
+  return data
+}
+
+const data = DataToRender()
+console.log(data)
+
+
   return (
     <>
       <div className="impaginazione">
@@ -87,9 +123,20 @@ function App() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
+          <label htmlFor="mySelect">Scegli una posizione</label>
+          <select 
+          id="mySelect"
+          value={selectOption}
+          onChange={handleChange}
+          >
+            <option value="">Seleziona</option>
+            {selettori.map((selettore) => (
+              <option value={`${selettore}`}>{selettore}</option>
+            ))}
+          </select>
         </div>
         <div className="card-container">
-          {(filtrati.length > 0 ? filtrati : politici).map((politico, id) => (
+          {data.map((politico, id) => (
             <Card
               key={id}
               politico={politico}
@@ -113,3 +160,17 @@ function App() {
 }
 
 export default App
+
+
+
+
+// {(filtrati.length > 0 ? filtrati : politici).map((politico, id) => (
+//             <Card
+//               key={id}
+//               politico={politico}
+//               isBroken={brokenCardId === id}
+//               onBreak={() => setBrokenCardId(id)}
+//               onOpenModal={() => setSelectedCard({ data: politico, id })}
+//             />
+//           ))
+//           }
