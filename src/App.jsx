@@ -78,8 +78,8 @@ function App() {
   console.log(filtrati)
 
   let selettori = []
-  politici.forEach((cur) =>{
-    if(!selettori.includes(cur.position)){
+  politici.forEach((cur) => {
+    if (!selettori.includes(cur.position)) {
       selettori.push(cur.position)
     }
   })
@@ -88,29 +88,29 @@ function App() {
 
   const [selectOption, setSelectOption] = useState("")
 
-const handleChange = (event) => {
-  setSelectOption(event.target.value)
-}
-
-const handleSelector = (arr) =>{
-  const filtrati = arr.filter((cur) => cur.position === selectOption)
-}
-
-// DATA TO RENDER
-const DataToRender = () => {
-  let data  = politici
-  if(filtrati.length > 0){
-    data = filtrati
-  }
-  if(selectOption.length > 0){
-  data = data.filter((cur) => cur.position === selectOption)
+  const handleChange = (event) => {
+    setSelectOption(event.target.value)
   }
 
-  return data
-}
+  const handleSelector = (arr) => {
+    const filtrati = arr.filter((cur) => cur.position === selectOption)
+  }
 
-const data = DataToRender()
-console.log(data)
+  // DATA TO RENDER
+  const DataToRender = () => {
+    let data = politici
+    if (filtrati.length > 0) {
+      data = filtrati
+    }
+    if (selectOption.length > 0) {
+      data = data.filter((cur) => cur.position === selectOption)
+    }
+
+    return data
+  }
+
+  const data = DataToRender()
+  console.log(data)
 
 
   return (
@@ -118,22 +118,29 @@ console.log(data)
       <div className="impaginazione">
         <div className="ricerca">
           <h3>Cerca il tuo Politico</h3>
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
+          <div className="neon-border">
+            <input
+              className="input"
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
           <label htmlFor="mySelect">Scegli una posizione</label>
-          <select 
-          id="mySelect"
-          value={selectOption}
-          onChange={handleChange}
-          >
-            <option value="">Seleziona</option>
-            {selettori.map((selettore) => (
-              <option value={`${selettore}`}>{selettore}</option>
-            ))}
-          </select>
+          <div className="neon-border">
+            <select
+              className="selector"
+              id="mySelect"
+              value={selectOption}
+              onChange={handleChange}
+            >
+              <option value="">Seleziona</option>
+              {selettori.map((selettore) => (
+                <option value={`${selettore}`}>{selettore}</option>
+              ))}
+            </select>
+          </div>
+
         </div>
         <div className="card-container">
           {data.map((politico, id) => (
